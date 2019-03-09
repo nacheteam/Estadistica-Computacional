@@ -3,16 +3,16 @@ cat("Escriba una función que calcule los coeficientes de asimetría y curtosis 
 cat("\n##########################################\n\n")
 
 gamma1<-function(x){
-  # Calculamos E[x^3]
-  mu3<-mean(x^3)
+  # Calculamos E[(x-E[x])^3]
+  mu3<-mean((x-mean(x))^3)
   # Calculamos sigma^3
   sigma3<-sqrt(var(x))^3
   return(mu3/sigma3)
 }
 
 gamma2<-function(x){
-  # Calculamos E[x^4]
-  mu4<-mean(x^4)
+  # Calculamos E[(x-E[x])^4]
+  mu4<-mean((x-mean(x))^4)
   # Calculamos sigma^4
   sigma4<-var(x)^2
   return(mu4/sigma4)
