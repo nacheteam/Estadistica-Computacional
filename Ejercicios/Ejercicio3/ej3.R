@@ -73,7 +73,7 @@ factorial_mal1_tester<-Factorial.tester(100)
 factorial_mal2_tester<-Factorial.tester(c(2,3,4))
 factorial_mal3_tester<-Factorial.tester(TRUE)
 
-cat("\n\nEjemplo de una llamada correcta a Factorial.tester con 100L: ", factorial_bien_tester)
+cat("\n\nEjemplo de una llamada a Factorial.tester con 100L: ", factorial_bien_tester)
 cat("\nEjemplo de una llamada a Factorial.tester con 100: ", factorial_mal1_tester)
 cat("\nEjemplo de una llamada con un vector de enteros a Factorial.tester: ",factorial_mal2_tester)
 cat("\nEjemplo de una llamada con un valor booleano a Factorial.tester: ",factorial_mal3_tester,"\n")
