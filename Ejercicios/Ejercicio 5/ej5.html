@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+  <title>Comparativas entre versiones de dong2</title>
+</head>
+<body>
+
+<h2>Enunciado</h2>
+<p>
+  Modificar la función dong2.v para que sólo se llame una vez a la función sample
+  y comparar la eficiencia ganada en tiempo con el cambio.
+</p>
+
+<h2>Solución</h2>
+
+<p>
+  Función dong original
+</p>
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Esta es la función dong2 original, únicamente añadiendo el cálculo del tiempo</span>
+<span class="hl com"># invertido en el cómputo de la función.</span>
+<span class="hl std">dong2.v.original</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">numero</span> <span class="hl std">=</span> <span class="hl num">100</span><span class="hl std">){</span>
+  <span class="hl com"># Momento en el que se inicia la función</span>
+  <span class="hl std">Inicio</span> <span class="hl kwb">=</span> <span class="hl kwd">Sys.time</span><span class="hl std">()</span>
+  <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= numero)</span>
+  <span class="hl std">y</span> <span class="hl kwb">=</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= numero)</span>
+  <span class="hl std">x[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl num">1</span>
+  <span class="hl std">y[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl num">1</span>
+  <span class="hl std">XX</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl num">0.25</span><span class="hl std">)</span>
+  <span class="hl std">YY</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0.5</span><span class="hl std">)</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">numero){</span>
+    <span class="hl std">a</span> <span class="hl kwb">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">)</span>
+    <span class="hl std">x[i]</span> <span class="hl kwb">=</span> <span class="hl num">0.5</span> <span class="hl opt">*</span> <span class="hl std">x[i</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">XX[a]</span>
+    <span class="hl std">y[i]</span> <span class="hl kwb">=</span> <span class="hl num">0.5</span> <span class="hl opt">*</span> <span class="hl std">y[i</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">YY[a]</span>
+  <span class="hl std">}</span>
+  <span class="hl com"># Momento en el que acaba el cálculo</span>
+  <span class="hl std">Final</span> <span class="hl kwb">=</span> <span class="hl kwd">Sys.time</span><span class="hl std">()</span>
+  <span class="hl com"># Tiempo invertido en el cómputo de la función</span>
+  <span class="hl std">tiempo</span> <span class="hl kwb">=</span> <span class="hl std">Final</span><span class="hl opt">-</span><span class="hl std">Inicio</span>
+  <span class="hl com"># Añadimos a la lista no sólo el resultado, también el tiempo invertido</span>
+  <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= x[</span><span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">numero],</span> <span class="hl kwc">y</span> <span class="hl std">= y[</span><span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">numero],</span> <span class="hl kwc">tiempo</span> <span class="hl std">= tiempo))</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función dong que sólo llama una vez a sample
+</p>
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Función con una sola llamada a sample</span>
+<span class="hl std">dong2.v.eficiente</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">numero</span> <span class="hl std">=</span> <span class="hl num">100</span><span class="hl std">){</span>
+  <span class="hl com"># Momento en el que se inicia la función</span>
+  <span class="hl std">Inicio</span> <span class="hl kwb">=</span> <span class="hl kwd">Sys.time</span><span class="hl std">()</span>
+  <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= numero)</span>
+  <span class="hl std">y</span> <span class="hl kwb">=</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= numero)</span>
+  <span class="hl std">x[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl num">1</span>
+  <span class="hl std">y[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl num">1</span>
+  <span class="hl std">XX</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl num">0.25</span><span class="hl std">)</span>
+  <span class="hl std">YY</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0.5</span><span class="hl std">)</span>
+  <span class="hl com"># Ahora llamamos a sample el mismo número de veces que en el bucle, esto es</span>
+  <span class="hl com"># numero-2 veces y con reemplazamiento. Si no lo hicieramos así no podríamos obtener</span>
+  <span class="hl com"># el número de muestras que queremos pues sólo tendríamos 3 posibles muestras (1,2,3)</span>
+  <span class="hl std">a</span> <span class="hl kwb">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,numero</span><span class="hl opt">-</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl kwc">replace</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">numero){</span>
+    <span class="hl com"># Ahora a es un vector de números, por lo que utilizamos la indexación. Además</span>
+    <span class="hl com"># tenemos que tener en cuenta que i empieza en 2 y no en 1, por lo que debemos de restar</span>
+    <span class="hl com"># 1 al índice.</span>
+    <span class="hl std">x[i]</span> <span class="hl kwb">=</span> <span class="hl num">0.5</span> <span class="hl opt">*</span> <span class="hl std">x[i</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">XX[a[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]]</span>
+    <span class="hl std">y[i]</span> <span class="hl kwb">=</span> <span class="hl num">0.5</span> <span class="hl opt">*</span> <span class="hl std">y[i</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">YY[a[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]]</span>
+  <span class="hl std">}</span>
+  <span class="hl com"># Momento en el que acaba el cálculo</span>
+  <span class="hl std">Final</span> <span class="hl kwb">=</span> <span class="hl kwd">Sys.time</span><span class="hl std">()</span>
+  <span class="hl com"># Tiempo invertido en el cómputo de la función.</span>
+  <span class="hl std">tiempo</span> <span class="hl kwb">=</span> <span class="hl std">Final</span><span class="hl opt">-</span><span class="hl std">Inicio</span>
+  <span class="hl com"># Añadimos a la lista no sólo el resultado, también el tiempo invertido.</span>
+  <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= x[</span><span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">numero],</span> <span class="hl kwc">y</span> <span class="hl std">= y[</span><span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">numero],</span> <span class="hl kwc">tiempo</span><span class="hl std">=tiempo))</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Veamos en primer lugar que las dos funciones definidas anteriormente producen
+  la misma salida
+</p>
+
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">res1</span> <span class="hl kwb">=</span> <span class="hl kwd">dong2.v.original</span><span class="hl std">(</span><span class="hl num">50000</span><span class="hl std">)</span>
+<span class="hl std">res2</span> <span class="hl kwb">=</span> <span class="hl kwd">dong2.v.eficiente</span><span class="hl std">(</span><span class="hl num">50000</span><span class="hl std">)</span>
+</pre></div>
+</div></div>
+
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(res1[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">2</span><span class="hl std">],</span><span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Dong original&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></div></div>
+
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(res2[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">2</span><span class="hl std">],</span><span class="hl kwc">main</span><span class="hl std">=</span><span class="hl str">&quot;Dong eficiente&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" class="plot" /></div></div>
+
+<p>
+  El resultado de las dos funciones es el mismo, no así el tiempo que consumen
+  ambas funciones. El tiempo consumido por la función original <code class="knitr inline">0.1992302</code>
+  segundos mientras que la función eficiente consume <code class="knitr inline">0.0126476</code> segundos.
+  Estos resultados nos arrojan que la función eficiente es casi 20 veces mas
+  rápida que la función original.
+</p>
+
+</body>
+</html>

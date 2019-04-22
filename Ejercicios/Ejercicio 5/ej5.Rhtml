@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comparativas entre versiones de dong2</title>
+</head>
+<body>
+
+<h2>Enunciado</h2>
+<p>
+  Modificar la función dong2.v para que sólo se llame una vez a la función sample
+  y comparar la eficiencia ganada en tiempo con el cambio.
+</p>
+
+<h2>Solución</h2>
+
+<p>
+  Función dong original
+</p>
+<!--begin.rcode
+# Esta es la función dong2 original, únicamente añadiendo el cálculo del tiempo
+# invertido en el cómputo de la función.
+dong2.v.original = function(numero = 100){
+  # Momento en el que se inicia la función
+  Inicio = Sys.time()
+  x = vector(mode = "numeric", length = numero)
+  y = vector(mode = "numeric", length = numero)
+  x[1] = 1
+  y[1] = 1
+  XX = c(0, 0.5, 0.25)
+  YY = c(0, 0, 0.5)
+  for(i in 2:numero){
+    a = sample(3,1)
+    x[i] = 0.5 * x[i - 1] + XX[a]
+    y[i] = 0.5 * y[i - 1] + YY[a]
+  }
+  # Momento en el que acaba el cálculo
+  Final = Sys.time()
+  # Tiempo invertido en el cómputo de la función
+  tiempo = Final-Inicio
+  # Añadimos a la lista no sólo el resultado, también el tiempo invertido
+  return(list(x = x[2:numero], y = y[2:numero], tiempo = tiempo))
+}
+end.rcode-->
+
+<p>
+  Función dong que sólo llama una vez a sample
+</p>
+<!--begin.rcode
+# Función con una sola llamada a sample
+dong2.v.eficiente = function(numero = 100){
+  # Momento en el que se inicia la función
+  Inicio = Sys.time()
+  x = vector(mode = "numeric", length = numero)
+  y = vector(mode = "numeric", length = numero)
+  x[1] = 1
+  y[1] = 1
+  XX = c(0, 0.5, 0.25)
+  YY = c(0, 0, 0.5)
+  # Ahora llamamos a sample el mismo número de veces que en el bucle, esto es
+  # numero-2 veces y con reemplazamiento. Si no lo hicieramos así no podríamos obtener
+  # el número de muestras que queremos pues sólo tendríamos 3 posibles muestras (1,2,3)
+  a = sample(3,numero-2,replace=TRUE)
+  for(i in 2:numero){
+    # Ahora a es un vector de números, por lo que utilizamos la indexación. Además
+    # tenemos que tener en cuenta que i empieza en 2 y no en 1, por lo que debemos de restar
+    # 1 al índice.
+    x[i] = 0.5 * x[i - 1] + XX[a[i-1]]
+    y[i] = 0.5 * y[i - 1] + YY[a[i-1]]
+  }
+  # Momento en el que acaba el cálculo
+  Final = Sys.time()
+  # Tiempo invertido en el cómputo de la función.
+  tiempo = Final-Inicio
+  # Añadimos a la lista no sólo el resultado, también el tiempo invertido.
+  return(list(x = x[2:numero], y = y[2:numero], tiempo=tiempo))
+}
+end.rcode-->
+
+<p>
+  Veamos en primer lugar que las dos funciones definidas anteriormente producen
+  la misma salida
+</p>
+
+<!--begin.rcode
+res1 = dong2.v.original(50000)
+res2 = dong2.v.eficiente(50000)
+end.rcode-->
+
+<!--begin.rcode
+plot(res1[1:2],main="Dong original")
+end.rcode-->
+
+<!--begin.rcode
+plot(res2[1:2],main="Dong eficiente")
+end.rcode-->
+
+<p>
+  El resultado de las dos funciones es el mismo, no así el tiempo que consumen
+  ambas funciones. El tiempo consumido por la función original <!--rinline res1$tiempo -->
+  segundos mientras que la función eficiente consume <!--rinline res2$tiempo --> segundos.
+  Estos resultados nos arrojan que la función eficiente es casi 20 veces mas
+  rápida que la función original.
+</p>
+
+</body>
+</html>
