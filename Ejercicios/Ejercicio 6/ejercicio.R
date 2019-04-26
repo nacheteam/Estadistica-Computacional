@@ -20,9 +20,9 @@ dentroCuadradoRecto <- function(x,y, punto){
 obtenRecta <- function(a,b){
   # Recta del tipo y=m*x+c
   # Obtenemos la pendiente
-  m<-((b[1]-a[1])/(b[2]-a[2]))
+  m<-((b[2]-a[2])/(b[1]-a[1]))
   # Obtenemos el término independiente
-  c<- b[2] - ((b[1]-a[1])/(b[2]-a[2]))*b[1]
+  c<- a[2] - m*a[1]
   # Lo devolvemos como una lista
   return(list(pendiente=m, termino_independiente=c))
 }
@@ -35,10 +35,10 @@ puntoRecta <- function(a,b,punto){
   recta<-function(x){obtenRecta(a,b)$pendiente*x + obtenRecta(a,b)$termino_independiente}
   if(punto[2]<recta(punto[1]))
     return(-1)
-  else if(punto[2]==recta(punto[1]))
-    return(0)
-  else
+  else if(punto[2]>recta(punto[1]))
     return(1)
+  else
+    return(0)
 }
 
 dentroCuadradoTorcido <- function(x,y,punto){
@@ -69,12 +69,39 @@ puntoDentroCuadrado <- function(x,y,punto){
   B = c(x[2],y[2])
   C = c(x[3],y[3])
   D = c(x[4],y[4])
-  if(obtenRecta(B,C)$pendiente==0){
-    cat("Usando la función del cuadrado recto\n")
+  if(C[1]==B[1]){
+    cat("Utilizando la función del cuadrado recto\n")
     return(dentroCuadradoRecto(x,y,punto))
   }
   else{
-    cat("Usando la función del cuadrado torcido\n")
+    cat("Utilizando la función del cuadrado torcido\n")
+    return(dentroCuadradoTorcido(x,y,punto))
+  }
+}
+
+dentroCuadradoRectoGeneral <- function(x,y, punto){
+  A = c(x[1],y[1])
+  B = c(x[2],y[2])
+  C = c(x[3],y[3])
+  D = c(x[4],y[4])
+  # Pintamos el cuadrado y el punto
+  dibujaPoligono(x,y)
+  points(x=c(punto[1]), y=c(punto[2]))
+  # Si el punto está en el borde no se considera dentro del polígono!
+  return(punto[1]<max(x) && punto[1]>min(x) && puntoRecta(A,B,punto)==1 && puntoRecta(C,D,punto)==-1)
+}
+
+puntoDentroCuadrado <- function(x,y,punto){
+  A = c(x[1],y[1])
+  B = c(x[2],y[2])
+  C = c(x[3],y[3])
+  D = c(x[4],y[4])
+  if(C[1]==B[1]){
+    cat("Utilizando la función del cuadrado recto\n")
+    return(dentroCuadradoRectoGeneral(x,y,punto))
+  }
+  else{
+    cat("Utilizando la función del cuadrado torcido\n")
     return(dentroCuadradoTorcido(x,y,punto))
   }
 }
