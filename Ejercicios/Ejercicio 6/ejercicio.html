@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+  <title>Punto dentro de un cuadrado</title>
+</head>
+<body>
+
+<h2>Enunciado</h2>
+<p>
+  Realizar una función que nos indique si un punto está o no dentro de un cuadrado.
+</p>
+
+<h2>Solución</h2>
+<p>
+  Lo primero que vamos a hacer es realizar una función que nos permita visualizar
+  un polígono en un plot. Veamos la función y expliquemos brevemente su definición.
+</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dibujaPoligono</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">){</span>
+  <span class="hl com"># Obtenemos los límites para pintar el polígono</span>
+  <span class="hl std">minimo</span> <span class="hl kwb">=</span> <span class="hl kwd">min</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwd">min</span><span class="hl std">(x),</span> <span class="hl kwd">min</span><span class="hl std">(y)))</span><span class="hl opt">-</span><span class="hl num">1</span>
+  <span class="hl std">maximo</span> <span class="hl kwb">=</span> <span class="hl kwd">max</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwd">max</span><span class="hl std">(x),</span> <span class="hl kwd">max</span><span class="hl std">(y)))</span><span class="hl opt">+</span><span class="hl num">1</span>
+  <span class="hl com"># Creamos un plot vacío</span>
+  <span class="hl kwd">plot</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">xlim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(minimo,maximo),</span> <span class="hl kwc">ylim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(minimo,maximo),</span><span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">)</span>
+  <span class="hl com"># Lo pintamos con borde azul</span>
+  <span class="hl kwd">polygon</span><span class="hl std">(x,y,</span><span class="hl kwc">border</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Con esta función podemos dibujar un polígono cualquiera, en nuestro caso nos va
+  a servir para dibujar los cuadrados que vamos a considerar en los siguientes
+  pasos del ejercicio, veamos un ejemplo.
+</p>
+
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">dibujaPoligono</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">dibujaPoligono</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div></div>
+
+<p>
+  Como podemos observar el plot lo realizamos con el polígono vacío para poder
+  visualizar su interior.
+</p>
+
+<p>
+  El siguiente paso es considerar un cuadrado como el primero que hemos pintado, es
+  decir, un cuadrado en el que los lados son verticales y horizontales. Veamos
+  cómo sabemos que un punto está dentro de un cuadrado de este tipo.
+</p>
+
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dentroCuadradoRecto</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">punto</span><span class="hl std">){</span>
+  <span class="hl com"># Los cuadrados de este tipo son de la forma {(min,min), (max, min), (max,max), (min,max)}</span>
+  <span class="hl com"># Pintamos el cuadrado y el punto</span>
+  <span class="hl kwd">dibujaPoligono</span><span class="hl std">(x,y)</span>
+  <span class="hl kwd">points</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]),</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(punto[</span><span class="hl num">2</span><span class="hl std">]))</span>
+  <span class="hl com"># Si el punto está en el borde no se considera dentro del polígono!</span>
+  <span class="hl kwd">return</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">&lt;</span><span class="hl kwd">max</span><span class="hl std">(x)</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">punto[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">&gt;</span><span class="hl kwd">min</span><span class="hl std">(x)</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">punto[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">&gt;</span><span class="hl kwd">min</span><span class="hl std">(y)</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">punto[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">&lt;</span><span class="hl kwd">max</span><span class="hl std">(y))</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Esta función recibe como parámetros los puntos x e y que definen el cuadrado
+  a considerar y el punto que queremos comprobar si se encuentra en su interior.
+  Para comprobar esto tenemos que ver que su valor en la coordenada X es mayor
+  que el mínimo de los valores de los vértices y menor que el máximo de los
+  valores en los vértices en la coordenada X de los mismos. De igual forma hay que
+  comprobar esta condición en el eje Y. Veamos cómo funciona con el primero
+  de los cuadrados.
+</p>
+
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">dentroCuadradoRecto</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] FALSE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">dentroCuadradoRecto</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0.2</span><span class="hl std">,</span><span class="hl num">0.7</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-4-2.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+</div></div>
+
+<p>
+  Como se puede observar en las figuras el comportamiento es el esperado.
+</p>
+
+<p>
+  Ahora nos queda el caso más complejo de cuadrados. Este caso es aquel en el que consideramos
+  cuadrados rotados. Para abordar este caso vamos a afrontarlo de la siguiente forma,
+  vamos a estudiar la posición del punto que tenemos frente a cada una de las rectas
+  que definen los lados del cuadrado.
+</p>
+
+<p>
+  Este caso a su vez podemos verlo en dos casos distintos, veamos ambos casos:
+</p>
+
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">dibujaPoligono</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">dibujaPoligono</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-5-2.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" class="plot" /></div></div>
+
+<p>
+  Conceptualmente estamos distinguiendo estos dos casos por lo siguiente, tanto en el
+  primero como en el segundo de los casos el punto considerado debe quedar por debajo
+  de la recta superior y por encima de la recta inferior, pero la distinción de casos
+  vienen de la diferencia entre las rectas laterales.
+</p>
+
+<p>
+  Si nos fijamos en la recta del lado derecho, podemos ver que en el primero de los
+  casos el punto debe caer por debajo de la recta mientras que en el segundo de los
+  casos debe caer por encima de la recta. Este factor es determinado por el signo de
+  la pendiente de la recta que define dicho lado. Con lo cual vamos a distinguir
+  cuando la pendiente de la recta del lado derecho es positiva o negativa, si la pendiente
+  del lado derecho es positiva, entonces la del lado izquierdo es positiva también (para ser un cuadrado)
+  y si la pendiente es negativa en el lado derecho lo será también en el izquierdo.
+</p>
+
+<p>
+  Para empezar vamos a definir una función que nos da la recta que pasa por dos
+  puntos.
+</p>
+
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">obtenRecta</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">){</span>
+  <span class="hl com"># Recta del tipo y=m*x+c</span>
+  <span class="hl com"># Obtenemos la pendiente</span>
+  <span class="hl std">m</span><span class="hl kwb">&lt;-</span><span class="hl std">((b[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">-</span><span class="hl std">a[</span><span class="hl num">2</span><span class="hl std">])</span><span class="hl opt">/</span><span class="hl std">(b[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">-</span><span class="hl std">a[</span><span class="hl num">1</span><span class="hl std">]))</span>
+  <span class="hl com"># Obtenemos el término independiente</span>
+  <span class="hl std">c</span><span class="hl kwb">&lt;-</span> <span class="hl std">a[</span><span class="hl num">2</span><span class="hl std">]</span> <span class="hl opt">-</span> <span class="hl std">m</span><span class="hl opt">*</span><span class="hl std">a[</span><span class="hl num">1</span><span class="hl std">]</span>
+  <span class="hl com"># Lo devolvemos como una lista</span>
+  <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">pendiente</span><span class="hl std">=m,</span> <span class="hl kwc">termino_independiente</span><span class="hl std">=c))</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Esta función lo que hace es, dados dos puntos calcula la recta que pasa por ambos
+  puntos. Esto es, si $a = (x_0, y_0)$, $b = (x_1, y_1)$ entonces la recta tiene
+  pendiente $m = \frac{y_1-y_0}{x_1-x_0}$. Como pasa por ambos puntos podemos tomar cualquiera
+  de ellos y despejar el término independiente de la ecuación $c = y_0 - \frac{y_1-y_0}{x_1-x_0}x_0$
+  con lo que la ecuación completa queda como $y = \frac{y_1-y_0}{x_1-x_0}x + y_0 - \frac{y_1-y_0}{x_1-x_0}x_0$.
+</p>
+
+<p>
+  Ahora necesitamos una función que nos de la posición relativa de un punto respecto
+  a una recta, esto es, si está por encima, en la recta o por debajo. Para ello vamos a definir
+  la siguiente función.
+</p>
+
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">puntoRecta</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">,</span><span class="hl kwc">punto</span><span class="hl std">){</span>
+  <span class="hl com"># Si un punto está por debajo de la recta entonces devolvemos -1, si está en la recta devolvemos 0</span>
+  <span class="hl com"># y si está por encima devolvemos 1</span>
+
+  <span class="hl com">#Obtenemos la recta usando la función obtenRecta</span>
+  <span class="hl std">recta</span><span class="hl kwb">&lt;-</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span><span class="hl kwd">obtenRecta</span><span class="hl std">(a,b)</span><span class="hl opt">$</span><span class="hl std">pendiente</span><span class="hl opt">*</span><span class="hl std">x</span> <span class="hl opt">+</span> <span class="hl kwd">obtenRecta</span><span class="hl std">(a,b)</span><span class="hl opt">$</span><span class="hl std">termino_independiente}</span>
+  <span class="hl kwa">if</span><span class="hl std">(punto[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">&lt;</span><span class="hl kwd">recta</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]))</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl kwa">else if</span><span class="hl std">(punto[</span><span class="hl num">2</span><span class="hl std">]</span><span class="hl opt">&gt;</span><span class="hl kwd">recta</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]))</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl kwa">else</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Como podemos ver, esta función lo que hace es devolver 1 si el punto está por debajo de
+  la recta, 0 si está en la propia recta y 1 si está por encima.
+</p>
+
+<p>
+  Una vez hechas estas funciones podemos hacer la función que nos indica si un punto
+  está dentro de un cuadrado en el que los laterales no son verticales, veámosla.
+</p>
+
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dentroCuadradoTorcido</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span><span class="hl kwc">punto</span><span class="hl std">){</span>
+  <span class="hl std">A</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">1</span><span class="hl std">],y[</span><span class="hl num">1</span><span class="hl std">])</span>
+  <span class="hl std">B</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">2</span><span class="hl std">],y[</span><span class="hl num">2</span><span class="hl std">])</span>
+  <span class="hl std">C</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">3</span><span class="hl std">],y[</span><span class="hl num">3</span><span class="hl std">])</span>
+  <span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">4</span><span class="hl std">],y[</span><span class="hl num">4</span><span class="hl std">])</span>
+
+  <span class="hl std">pendiente</span> <span class="hl kwb">=</span> <span class="hl kwd">obtenRecta</span><span class="hl std">(B,C)</span><span class="hl opt">$</span><span class="hl std">pendiente</span>
+
+  <span class="hl std">pos_recta1</span> <span class="hl kwb">=</span> <span class="hl kwd">puntoRecta</span><span class="hl std">(A,B,punto)</span>
+  <span class="hl std">pos_recta2</span> <span class="hl kwb">=</span> <span class="hl kwd">puntoRecta</span><span class="hl std">(B,C,punto)</span>
+  <span class="hl std">pos_recta3</span> <span class="hl kwb">=</span> <span class="hl kwd">puntoRecta</span><span class="hl std">(C,D,punto)</span>
+  <span class="hl std">pos_recta4</span> <span class="hl kwb">=</span> <span class="hl kwd">puntoRecta</span><span class="hl std">(D,A,punto)</span>
+
+  <span class="hl com"># Pintamos el cuadrado y el punto</span>
+  <span class="hl kwd">dibujaPoligono</span><span class="hl std">(x,y)</span>
+  <span class="hl kwd">points</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]),</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(punto[</span><span class="hl num">2</span><span class="hl std">]))</span>
+
+  <span class="hl kwa">if</span><span class="hl std">(pendiente</span><span class="hl opt">&gt;</span><span class="hl num">0</span><span class="hl std">)</span>
+    <span class="hl kwd">return</span><span class="hl std">(pos_recta1</span><span class="hl opt">==</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">pos_recta2</span><span class="hl opt">==</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">pos_recta3</span><span class="hl opt">==-</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">pos_recta4</span><span class="hl opt">==-</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl kwa">else</span>
+    <span class="hl kwd">return</span><span class="hl std">(pos_recta1</span><span class="hl opt">==</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">pos_recta2</span><span class="hl opt">==-</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">pos_recta3</span><span class="hl opt">==-</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">pos_recta4</span><span class="hl opt">==</span><span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Como podemos observar el razonamiento es el siguiente: en función de la pendiente
+  del lado derecho (como hemos comentado anteriormente) estudiamos la posición del punto
+  frente a las 4 rectas que definen los lados del cuadrado. En este caso el orden en el que
+  se pasan los puntos a la función es crucial. Se le deben pasar los datos empezando por
+  la esquina inferior izquierda, luego la esquina inferior derecha, luego la esquina
+  superior derecha y finalmente la superior izquierda.
+</p>
+
+<p>
+  Por último todo esto lo podemos encapsular en una función general, si la primera coordenada
+  del segundo y tercer punto es la misma entonces el lado es una recta vertical y por tanto
+  aplicamos la función del cuadrado recto. En cambio si no son iguales aplicamos la función
+  del cuadrado torcido.
+</p>
+
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">puntoDentroCuadrado</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span><span class="hl kwc">punto</span><span class="hl std">){</span>
+  <span class="hl std">A</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">1</span><span class="hl std">],y[</span><span class="hl num">1</span><span class="hl std">])</span>
+  <span class="hl std">B</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">2</span><span class="hl std">],y[</span><span class="hl num">2</span><span class="hl std">])</span>
+  <span class="hl std">C</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">3</span><span class="hl std">],y[</span><span class="hl num">3</span><span class="hl std">])</span>
+  <span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">4</span><span class="hl std">],y[</span><span class="hl num">4</span><span class="hl std">])</span>
+  <span class="hl kwa">if</span><span class="hl std">(C[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">==</span><span class="hl std">B[</span><span class="hl num">1</span><span class="hl std">]){</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Utilizando la función del cuadrado recto\n&quot;</span><span class="hl std">)</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">dentroCuadradoRecto</span><span class="hl std">(x,y,punto))</span>
+  <span class="hl std">}</span>
+  <span class="hl kwa">else</span><span class="hl std">{</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Utilizando la función del cuadrado torcido\n&quot;</span><span class="hl std">)</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">dentroCuadradoTorcido</span><span class="hl std">(x,y,punto))</span>
+  <span class="hl std">}</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Por último veamos el funcionamiento de esta última función.
+</p>
+
+<div class="chunk" id="unnamed-chunk-10"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0.2</span><span class="hl std">,</span><span class="hl num">0.7</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado recto
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0.2</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado recto
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-2.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] FALSE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0.5</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado torcido
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-3.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado torcido
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-4.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] FALSE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0.5</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado torcido
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-5.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado torcido
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-6.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] FALSE
+</pre></div>
+</div></div>
+
+<p>
+  Tras esto aún no hemos llegado a la función más general, pues nos queda el caso en el
+  que tenemos cuadrados de la siguiente forma:
+</p>
+
+<div class="chunk" id="unnamed-chunk-11"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">dibujaPoligono</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" class="plot" /></div></div>
+
+<p>
+  Según el código que tenemos hasta el momento este caso entraría en el de un cuadrado no torcido
+  y por tanto consideraríamos que todos los lados son rectos, lo cual llevaría a error.
+  Para corregir el comportamiento de nuestra función vamos a considerar lo siguiente: siempre
+  vamos a comprobar que estamos por debajo de la recta superior y por encima de la inferior.
+</p>
+
+<p>
+  Esta condición es general y vale para todos los casos, por tanto vamos a aprovechar
+  este comportamiento y vamos a modificar nuestras funciones.
+</p>
+
+<div class="chunk" id="unnamed-chunk-12"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dentroCuadradoRectoGeneral</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">punto</span><span class="hl std">){</span>
+  <span class="hl std">A</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">1</span><span class="hl std">],y[</span><span class="hl num">1</span><span class="hl std">])</span>
+  <span class="hl std">B</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">2</span><span class="hl std">],y[</span><span class="hl num">2</span><span class="hl std">])</span>
+  <span class="hl std">C</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">3</span><span class="hl std">],y[</span><span class="hl num">3</span><span class="hl std">])</span>
+  <span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">4</span><span class="hl std">],y[</span><span class="hl num">4</span><span class="hl std">])</span>
+  <span class="hl com"># Pintamos el cuadrado y el punto</span>
+  <span class="hl kwd">dibujaPoligono</span><span class="hl std">(x,y)</span>
+  <span class="hl kwd">points</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]),</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(punto[</span><span class="hl num">2</span><span class="hl std">]))</span>
+  <span class="hl com"># Si el punto está en el borde no se considera dentro del polígono!</span>
+  <span class="hl kwd">return</span><span class="hl std">(punto[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">&lt;</span><span class="hl kwd">max</span><span class="hl std">(x)</span> <span class="hl opt">&amp;&amp;</span> <span class="hl std">punto[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">&gt;</span><span class="hl kwd">min</span><span class="hl std">(x)</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwd">puntoRecta</span><span class="hl std">(A,B,punto)</span><span class="hl opt">==</span><span class="hl num">1</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwd">puntoRecta</span><span class="hl std">(C,D,punto)</span><span class="hl opt">==-</span><span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+<span class="hl std">puntoDentroCuadrado</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span><span class="hl kwc">punto</span><span class="hl std">){</span>
+  <span class="hl std">A</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">1</span><span class="hl std">],y[</span><span class="hl num">1</span><span class="hl std">])</span>
+  <span class="hl std">B</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">2</span><span class="hl std">],y[</span><span class="hl num">2</span><span class="hl std">])</span>
+  <span class="hl std">C</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">3</span><span class="hl std">],y[</span><span class="hl num">3</span><span class="hl std">])</span>
+  <span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(x[</span><span class="hl num">4</span><span class="hl std">],y[</span><span class="hl num">4</span><span class="hl std">])</span>
+  <span class="hl kwa">if</span><span class="hl std">(C[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl opt">==</span><span class="hl std">B[</span><span class="hl num">1</span><span class="hl std">]){</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Utilizando la función del cuadrado recto\n&quot;</span><span class="hl std">)</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">dentroCuadradoRectoGeneral</span><span class="hl std">(x,y,punto))</span>
+  <span class="hl std">}</span>
+  <span class="hl kwa">else</span><span class="hl std">{</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Utilizando la función del cuadrado torcido\n&quot;</span><span class="hl std">)</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">dentroCuadradoTorcido</span><span class="hl std">(x,y,punto))</span>
+  <span class="hl std">}</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Comprobemos el comportamiento con el último cuadrado descrito.
+</p>
+
+<div class="chunk" id="unnamed-chunk-13"><div class="rcode"><div class="source"><pre class="knitr r">  <span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">),</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0.5</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado recto
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+<div class="source"><pre class="knitr r">  <span class="hl kwd">puntoDentroCuadrado</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">),</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Utilizando la función del cuadrado recto
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-13-2.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">## [1] FALSE
+</pre></div>
+</div></div>
+
+</body>
+</html>
