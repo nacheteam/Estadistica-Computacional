@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+</head>
+
+<body>
+
+<p>
+  Función que dibuja una circunferencia centrada en el origen y de radio R
+</p>
+
+<!--begin.rcode
+dibuja_circunferencia <- function(R){
+  f = function(x){sqrt(R^2-x^2)}
+  x11()
+  curve(f(x),xlim=c(-R,R),ylim=c(-R,R),col="blue")
+  curve(-f(x),add=T,col="blue")
+}
+end.rcode-->
+
+<p>
+  Función que simula una sucesión de puntos tomados de una normal y los va sumando
+</p>
+
+<!--begin.rcode
+sucesion <- function(n=50, x0 = 0, a = 0, b = 1){
+	d = 0:n
+	d[1] = x0
+	for(i in 2:(n+1)){
+		v = rnorm(1, mean=a, sd = b)
+		d[i] = v+d[i-1]
+	}
+	return(d)
+}
+end.rcode-->
+
+<p>
+  Función que dibuja el resultado de una simulación.
+</p>
+
+<!--begin.rcode
+dibujaResultado<-function(X,Y,PuntoCorte,r=1,Cx=0,Cy=0){
+curve(sqrt(r^2-(x-Cx)^2)+Cy, xlim=c(-r+Cx,r+Cx), ylim=c(-r+Cy,r+Cy), from=-r+Cx, to =r+Cx)
+curve(-sqrt(r^2-(x-Cx)^2)+Cy, add=T, from=-r+Cx, to = r+Cx)
+lines(X,Y, col="blue")
+points(x=PuntoCorte[1],y=PuntoCorte[2],col="red",type="o", pch=16, bg=par("bg"),cex=1.5)
+}
+end.rcode-->
+
+<p>
+  Función que comprueba si la simulación de una sucesión se sale o no de un círculo.
+</p>
+
+<!--begin.rcode
+f <- function(n=50,x0=0,y0=0,a=0,b=.1, r=1,Cx = 0, Cy = 0){
+	X = sucesion(n,Cx,a,b)
+	Y = sucesion(n,Cy,a,b)
+	Fuera = F
+  Pasos=NA
+  PuntoCorte=NA
+	for(i in 1:(n+1)){
+		if(fuera(X[i],Y[i], r, Cx, Cy)){
+			Fuera = T
+      Pasos=i
+      PuntoCorte=c(X[i],Y[i])
+			break
+		}
+	}
+	return(list(X=X[1:i], Y=Y[1:i], Fuera=Fuera, Pasos=Pasos, PuntoCorte=PuntoCorte))
+}
+end.rcode-->
+
+<p>
+  Función que comprueba si un punto se ha salido o no de un círculo.
+</p>
+
+<!--begin.rcode
+fuera <- function(x,y, r = 1, Cx = 0, Cy = 0){
+	return (((x-Cx)^2+(y-Cy)^2)>=r^2)
+}
+end.rcode-->
+
+<p>
+  Función que simula 100 veces una sucesión y comprueba cuántas veces nos salimos
+</p>
+
+<!--begin.rcode
+comprueba_fuera <- function(n, b_s){
+	s = 0
+	for(i in 1:100){
+         if(f(n, b = b_s)$Fuera){
+            s = s+1
+         }
+      }
+	return(s/100)
+}
+end.rcode-->
+
+<p>
+  Función que calcula la distribución de resultados de la repetición del experimento de la sucesión
+  y comprobar si se sale o no de un círculo.
+</p>
+
+<!--begin.rcode
+DistriS <- function(veces=10000,n=50,x0=0,y0=0,a=0,b=.1, r=1,Cx = 0, Cy = 0){
+  resultados = vector(mode="numeric", length=veces)
+  for(i in 1:veces){
+    resultados[i] = f(n,x0,y0,a,b,r,Cx,Cy)$Pasos
+  }
+  return(resultados)
+}
+end.rcode-->
+
+<p>
+  Tomamos el resultado, le hacemos un summary y pintamos su histograma.
+</p>
+
+<!--begin.rcode
+res <- DistriS(1000,n=200)
+summary(res)
+hist(res)
+end.rcode-->
+
+<p>
+  Simulamos un único experimento y lo dibujamos.
+</p>
+
+<!--begin.rcode
+res <- f(n=10000,b=0.01)
+dibujaResultado(X=res$X,Y=res$Y,PuntoCorte=res$PuntoCorte)
+end.rcode-->
+
+<p>
+  Veamos ahora sólo los puntos de corte de varias simulaciones.
+</p>
+
+<!--begin.rcode
+plot(x=c(-1,1), y=c(-1,1), type="n")
+for(i in 1:500){
+  res <- f(n=1000, b=0.05)
+  points(x=res$PuntoCorte[1],y=res$PuntoCorte[2],col="red",type="o", pch=16, bg=par("bg"),cex=1.5)
+}
+end.rcode-->
+
+</body>
+</html>

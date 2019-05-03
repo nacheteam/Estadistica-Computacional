@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+ <meta charset="UTF-8">
+</head>
+
+<body>
+
+<p>
+  Función que dibuja una circunferencia centrada en el origen y de radio R
+</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dibuja_circunferencia</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">R</span><span class="hl std">){</span>
+  <span class="hl std">f</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span><span class="hl kwd">sqrt</span><span class="hl std">(R</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">-</span><span class="hl std">x</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)}</span>
+  <span class="hl kwd">x11</span><span class="hl std">()</span>
+  <span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl kwd">f</span><span class="hl std">(x),</span><span class="hl kwc">xlim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">R,R),</span><span class="hl kwc">ylim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">R,R),</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">)</span>
+  <span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl kwd">f</span><span class="hl std">(x),</span><span class="hl kwc">add</span><span class="hl std">=T,</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función que simula una sucesión de puntos tomados de una normal y los va sumando
+</p>
+
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">sucesion</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">50</span><span class="hl std">,</span> <span class="hl kwc">x0</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">a</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">b</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">){</span>
+        <span class="hl std">d</span> <span class="hl kwb">=</span> <span class="hl num">0</span><span class="hl opt">:</span><span class="hl std">n</span>
+        <span class="hl std">d[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl std">x0</span>
+        <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">(n</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">)){</span>
+                <span class="hl std">v</span> <span class="hl kwb">=</span> <span class="hl kwd">rnorm</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">mean</span><span class="hl std">=a,</span> <span class="hl kwc">sd</span> <span class="hl std">= b)</span>
+                <span class="hl std">d[i]</span> <span class="hl kwb">=</span> <span class="hl std">v</span><span class="hl opt">+</span><span class="hl std">d[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span>
+        <span class="hl std">}</span>
+        <span class="hl kwd">return</span><span class="hl std">(d)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función que dibuja el resultado de una simulación.
+</p>
+
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dibujaResultado</span><span class="hl kwb">&lt;-</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">X</span><span class="hl std">,</span><span class="hl kwc">Y</span><span class="hl std">,</span><span class="hl kwc">PuntoCorte</span><span class="hl std">,</span><span class="hl kwc">r</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl kwc">Cx</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">Cy</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">){</span>
+<span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(r</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">-</span><span class="hl std">(x</span><span class="hl opt">-</span><span class="hl std">Cx)</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span><span class="hl opt">+</span><span class="hl std">Cy,</span> <span class="hl kwc">xlim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">r</span><span class="hl opt">+</span><span class="hl std">Cx,r</span><span class="hl opt">+</span><span class="hl std">Cx),</span> <span class="hl kwc">ylim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">r</span><span class="hl opt">+</span><span class="hl std">Cy,r</span><span class="hl opt">+</span><span class="hl std">Cy),</span> <span class="hl kwc">from</span><span class="hl std">=</span><span class="hl opt">-</span><span class="hl std">r</span><span class="hl opt">+</span><span class="hl std">Cx,</span> <span class="hl kwc">to</span> <span class="hl std">=r</span><span class="hl opt">+</span><span class="hl std">Cx)</span>
+<span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl kwd">sqrt</span><span class="hl std">(r</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">-</span><span class="hl std">(x</span><span class="hl opt">-</span><span class="hl std">Cx)</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span><span class="hl opt">+</span><span class="hl std">Cy,</span> <span class="hl kwc">add</span><span class="hl std">=T,</span> <span class="hl kwc">from</span><span class="hl std">=</span><span class="hl opt">-</span><span class="hl std">r</span><span class="hl opt">+</span><span class="hl std">Cx,</span> <span class="hl kwc">to</span> <span class="hl std">= r</span><span class="hl opt">+</span><span class="hl std">Cx)</span>
+<span class="hl kwd">lines</span><span class="hl std">(X,Y,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">)</span>
+<span class="hl kwd">points</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=PuntoCorte[</span><span class="hl num">1</span><span class="hl std">],</span><span class="hl kwc">y</span><span class="hl std">=PuntoCorte[</span><span class="hl num">2</span><span class="hl std">],</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span><span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">bg</span><span class="hl std">=</span><span class="hl kwd">par</span><span class="hl std">(</span><span class="hl str">&quot;bg&quot;</span><span class="hl std">),</span><span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">1.5</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función que comprueba si la simulación de una sucesión se sale o no de un círculo.
+</p>
+
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">f</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">50</span><span class="hl std">,</span><span class="hl kwc">x0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">y0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">a</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">.1</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl kwc">Cx</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">Cy</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">){</span>
+        <span class="hl std">X</span> <span class="hl kwb">=</span> <span class="hl kwd">sucesion</span><span class="hl std">(n,Cx,a,b)</span>
+        <span class="hl std">Y</span> <span class="hl kwb">=</span> <span class="hl kwd">sucesion</span><span class="hl std">(n,Cy,a,b)</span>
+        <span class="hl std">Fuera</span> <span class="hl kwb">=</span> <span class="hl std">F</span>
+  <span class="hl std">Pasos</span><span class="hl kwb">=</span><span class="hl num">NA</span>
+  <span class="hl std">PuntoCorte</span><span class="hl kwb">=</span><span class="hl num">NA</span>
+        <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">(n</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">)){</span>
+                <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">fuera</span><span class="hl std">(X[i],Y[i], r, Cx, Cy)){</span>
+                        <span class="hl std">Fuera</span> <span class="hl kwb">=</span> <span class="hl std">T</span>
+      <span class="hl std">Pasos</span><span class="hl kwb">=</span><span class="hl std">i</span>
+      <span class="hl std">PuntoCorte</span><span class="hl kwb">=</span><span class="hl kwd">c</span><span class="hl std">(X[i],Y[i])</span>
+                        <span class="hl kwa">break</span>
+                <span class="hl std">}</span>
+        <span class="hl std">}</span>
+        <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">X</span><span class="hl std">=X[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">i],</span> <span class="hl kwc">Y</span><span class="hl std">=Y[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">i],</span> <span class="hl kwc">Fuera</span><span class="hl std">=Fuera,</span> <span class="hl kwc">Pasos</span><span class="hl std">=Pasos,</span> <span class="hl kwc">PuntoCorte</span><span class="hl std">=PuntoCorte))</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función que comprueba si un punto se ha salido o no de un círculo.
+</p>
+
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fuera</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">r</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">Cx</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">Cy</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">){</span>
+        <span class="hl kwd">return</span> <span class="hl std">(((x</span><span class="hl opt">-</span><span class="hl std">Cx)</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">+</span><span class="hl std">(y</span><span class="hl opt">-</span><span class="hl std">Cy)</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span><span class="hl opt">&gt;=</span><span class="hl std">r</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función que simula 100 veces una sucesión y comprueba cuántas veces nos salimos
+</p>
+
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">comprueba_fuera</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">n</span><span class="hl std">,</span> <span class="hl kwc">b_s</span><span class="hl std">){</span>
+        <span class="hl std">s</span> <span class="hl kwb">=</span> <span class="hl num">0</span>
+        <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">100</span><span class="hl std">){</span>
+         <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">f</span><span class="hl std">(n,</span> <span class="hl kwc">b</span> <span class="hl std">= b_s)</span><span class="hl opt">$</span><span class="hl std">Fuera){</span>
+            <span class="hl std">s</span> <span class="hl kwb">=</span> <span class="hl std">s</span><span class="hl opt">+</span><span class="hl num">1</span>
+         <span class="hl std">}</span>
+      <span class="hl std">}</span>
+        <span class="hl kwd">return</span><span class="hl std">(s</span><span class="hl opt">/</span><span class="hl num">100</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Función que calcula la distribución de resultados de la repetición del experimento de la sucesión
+  y comprobar si se sale o no de un círculo.
+</p>
+
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">DistriS</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">veces</span><span class="hl std">=</span><span class="hl num">10000</span><span class="hl std">,</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">50</span><span class="hl std">,</span><span class="hl kwc">x0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">y0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">a</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">.1</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl kwc">Cx</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">Cy</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">){</span>
+  <span class="hl std">resultados</span> <span class="hl kwb">=</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span><span class="hl std">=</span><span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=veces)</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">veces){</span>
+    <span class="hl std">resultados[i]</span> <span class="hl kwb">=</span> <span class="hl kwd">f</span><span class="hl std">(n,x0,y0,a,b,r,Cx,Cy)</span><span class="hl opt">$</span><span class="hl std">Pasos</span>
+  <span class="hl std">}</span>
+  <span class="hl kwd">return</span><span class="hl std">(resultados)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<p>
+  Tomamos el resultado, le hacemos un summary y pintamos su histograma.
+</p>
+
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">res</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">DistriS</span><span class="hl std">(</span><span class="hl num">1000</span><span class="hl std">,</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">200</span><span class="hl std">)</span>
+<span class="hl kwd">summary</span><span class="hl std">(res)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    9.00   30.00   46.00   55.21   72.00  183.00       8
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">hist</span><span class="hl std">(res)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" class="plot" /></div></div>
+
+<p>
+  Simulamos un único experimento y lo dibujamos.
+</p>
+
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">res</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">f</span><span class="hl std">(</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">10000</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">0.01</span><span class="hl std">)</span>
+<span class="hl kwd">dibujaResultado</span><span class="hl std">(</span><span class="hl kwc">X</span><span class="hl std">=res</span><span class="hl opt">$</span><span class="hl std">X,</span><span class="hl kwc">Y</span><span class="hl std">=res</span><span class="hl opt">$</span><span class="hl std">Y,</span><span class="hl kwc">PuntoCorte</span><span class="hl std">=res</span><span class="hl opt">$</span><span class="hl std">PuntoCorte)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" class="plot" /></div></div>
+
+<p>
+  Veamos ahora sólo los puntos de corte de varias simulaciones.
+</p>
+
+<div class="chunk" id="unnamed-chunk-10"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">)</span>
+<span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">500</span><span class="hl std">){</span>
+  <span class="hl std">res</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">f</span><span class="hl std">(</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">1000</span><span class="hl std">,</span> <span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">0.05</span><span class="hl std">)</span>
+  <span class="hl kwd">points</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=res</span><span class="hl opt">$</span><span class="hl std">PuntoCorte[</span><span class="hl num">1</span><span class="hl std">],</span><span class="hl kwc">y</span><span class="hl std">=res</span><span class="hl opt">$</span><span class="hl std">PuntoCorte[</span><span class="hl num">2</span><span class="hl std">],</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span><span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">bg</span><span class="hl std">=</span><span class="hl kwd">par</span><span class="hl std">(</span><span class="hl str">&quot;bg&quot;</span><span class="hl std">),</span><span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">1.5</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div></div>
+
+</body>
+</html>
