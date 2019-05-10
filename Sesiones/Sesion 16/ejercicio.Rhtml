@@ -1,0 +1,68 @@
+<html>
+<head>
+</head>
+
+<body>
+
+<!--begin.rcode
+#Escribe una función fff que describe el movimiento de una partícula
+#en el espacio que partiendo de un punto x0,y0,z0 se mueve del siguiente modo:
+#en cada paso, con probabilidad 0.45 avanza una unidad en cada coordenada,
+#con probabilidad 0.37, retrocede una unidad en cada coordenada, y en el resto permanece detenida.
+
+#El resultado de la función para un tiempo t es el recorrido realizado en las 3 dimensiones, y la media del recorrido en la segunda dimensión.
+
+#Estudia la distribución del tiempo de salida de una esfera de radio R = 100 centrada en el origen.
+
+#Añade los comentarios que estimes oportuno y los parámetros que creas necesarios.
+
+fff<-function(x_0,y_0,z_0,tiempo,p_av=0.45, p_ret=0.37, p_qui=0.18){
+  movimiento <- sample(x=c(1,-1,0), size=tiempo, prob=c(p_av, p_ret, p_qui), replace=T)
+  x<-vector(mode="numeric", length=tiempo+1)
+  x[1]=x_0
+  y<-vector(mode="numeric", length=tiempo+1)
+  y[1]=y_0
+  z<-vector(mode="numeric", length=tiempo+1)
+  z[1]=z_0
+  for(i in 2:tiempo+1){
+    x[i] = x[i-1] + movimiento[i-1]
+    y[i] = y[i-1] + movimiento[i-1]
+    z[i] = z[i-1] + movimiento[i-1]
+  }
+  return(list(X=x, Y=y, Z=z, media=mean(y)))
+}
+
+fueraEsfera <- function(x,y,z,cx=0,cy=0,cz=0,R=100){
+  return((x-cx)^2 + (y-cy)^2 + (z-cz)^2 > R^2)
+}
+
+interior<-function(max=50,x0=0, y0=0, z0=0, cx=0, cy=0, cz=0, R=100){
+  A<-fff(x0,y0,z0,t=max)
+  EstaFuera=NA
+  for(i in 1:max){
+    if(fueraEsfera(A$X[i], A$Y[i], A$Z[i], cx,cy,cz,R)){
+      EstaFuera<-i
+      break
+    }
+  }
+  return(EstaFuera)
+}
+
+distribucion<-function(nExp, max){
+  resultados<-1:nExp
+  for(i in 1:nExp)
+    resultados[i]<-interior(max=max)
+  return(resultados)
+}
+
+end.rcode-->
+
+<!--begin.rcode
+  res<-distribucion(nExp=10000,max=2000)
+  summary(res)
+  hist(res)
+end.rcode-->
+
+</body>
+
+</html>

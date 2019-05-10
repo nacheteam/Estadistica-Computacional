@@ -1,0 +1,133 @@
+<html>
+<head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">#Escribe una función fff que describe el movimiento de una partícula</span>
+<span class="hl com">#en el espacio que partiendo de un punto x0,y0,z0 se mueve del siguiente modo:</span>
+<span class="hl com">#en cada paso, con probabilidad 0.45 avanza una unidad en cada coordenada,</span>
+<span class="hl com">#con probabilidad 0.37, retrocede una unidad en cada coordenada, y en el resto permanece detenida.</span>
+
+<span class="hl com">#El resultado de la función para un tiempo t es el recorrido realizado en las 3 dimensiones, y la media del recorrido en la segunda dimensión.</span>
+
+<span class="hl com">#Estudia la distribución del tiempo de salida de una esfera de radio R = 100 centrada en el origen.</span>
+
+<span class="hl com">#Añade los comentarios que estimes oportuno y los parámetros que creas necesarios.</span>
+
+<span class="hl std">fff</span><span class="hl kwb">&lt;-</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x_0</span><span class="hl std">,</span><span class="hl kwc">y_0</span><span class="hl std">,</span><span class="hl kwc">z_0</span><span class="hl std">,</span><span class="hl kwc">tiempo</span><span class="hl std">,</span><span class="hl kwc">p_av</span><span class="hl std">=</span><span class="hl num">0.45</span><span class="hl std">,</span> <span class="hl kwc">p_ret</span><span class="hl std">=</span><span class="hl num">0.37</span><span class="hl std">,</span> <span class="hl kwc">p_qui</span><span class="hl std">=</span><span class="hl num">0.18</span><span class="hl std">){</span>
+  <span class="hl std">movimiento</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">0</span><span class="hl std">),</span> <span class="hl kwc">size</span><span class="hl std">=tiempo,</span> <span class="hl kwc">prob</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(p_av, p_ret, p_qui),</span> <span class="hl kwc">replace</span><span class="hl std">=T)</span>
+  <span class="hl std">x</span><span class="hl kwb">&lt;-</span><span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span><span class="hl std">=</span><span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=tiempo</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl std">x[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl kwb">=</span><span class="hl std">x_0</span>
+  <span class="hl std">y</span><span class="hl kwb">&lt;-</span><span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span><span class="hl std">=</span><span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=tiempo</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl std">y[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl kwb">=</span><span class="hl std">y_0</span>
+  <span class="hl std">z</span><span class="hl kwb">&lt;-</span><span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span><span class="hl std">=</span><span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span><span class="hl std">=tiempo</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl std">z[</span><span class="hl num">1</span><span class="hl std">]</span><span class="hl kwb">=</span><span class="hl std">z_0</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">2</span><span class="hl opt">:</span><span class="hl std">tiempo</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">){</span>
+    <span class="hl std">x[i]</span> <span class="hl kwb">=</span> <span class="hl std">x[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">movimiento[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span>
+    <span class="hl std">y[i]</span> <span class="hl kwb">=</span> <span class="hl std">y[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">movimiento[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span>
+    <span class="hl std">z[i]</span> <span class="hl kwb">=</span> <span class="hl std">z[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl opt">+</span> <span class="hl std">movimiento[i</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">]</span>
+  <span class="hl std">}</span>
+  <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">X</span><span class="hl std">=x,</span> <span class="hl kwc">Y</span><span class="hl std">=y,</span> <span class="hl kwc">Z</span><span class="hl std">=z,</span> <span class="hl kwc">media</span><span class="hl std">=</span><span class="hl kwd">mean</span><span class="hl std">(y)))</span>
+<span class="hl std">}</span>
+
+<span class="hl std">fueraEsfera</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span><span class="hl kwc">z</span><span class="hl std">,</span><span class="hl kwc">cx</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">cy</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">cz</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl kwc">R</span><span class="hl std">=</span><span class="hl num">100</span><span class="hl std">){</span>
+  <span class="hl kwd">return</span><span class="hl std">((x</span><span class="hl opt">-</span><span class="hl std">cx)</span><span class="hl opt">^</span><span class="hl num">2</span> <span class="hl opt">+</span> <span class="hl std">(y</span><span class="hl opt">-</span><span class="hl std">cy)</span><span class="hl opt">^</span><span class="hl num">2</span> <span class="hl opt">+</span> <span class="hl std">(z</span><span class="hl opt">-</span><span class="hl std">cz)</span><span class="hl opt">^</span><span class="hl num">2</span> <span class="hl opt">&gt;</span> <span class="hl std">R</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+
+<span class="hl std">interior</span><span class="hl kwb">&lt;-</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">max</span><span class="hl std">=</span><span class="hl num">50</span><span class="hl std">,</span><span class="hl kwc">x0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">y0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">z0</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">cx</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">cy</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">cz</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">R</span><span class="hl std">=</span><span class="hl num">100</span><span class="hl std">){</span>
+  <span class="hl std">A</span><span class="hl kwb">&lt;-</span><span class="hl kwd">fff</span><span class="hl std">(x0,y0,z0,</span><span class="hl kwc">t</span><span class="hl std">=max)</span>
+  <span class="hl std">EstaFuera</span><span class="hl kwb">=</span><span class="hl num">NA</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">max){</span>
+    <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">fueraEsfera</span><span class="hl std">(A</span><span class="hl opt">$</span><span class="hl std">X[i], A</span><span class="hl opt">$</span><span class="hl std">Y[i], A</span><span class="hl opt">$</span><span class="hl std">Z[i], cx,cy,cz,R)){</span>
+      <span class="hl std">EstaFuera</span><span class="hl kwb">&lt;-</span><span class="hl std">i</span>
+      <span class="hl kwa">break</span>
+    <span class="hl std">}</span>
+  <span class="hl std">}</span>
+  <span class="hl kwd">return</span><span class="hl std">(EstaFuera)</span>
+<span class="hl std">}</span>
+
+<span class="hl std">distribucion</span><span class="hl kwb">&lt;-</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">nExp</span><span class="hl std">,</span> <span class="hl kwc">max</span><span class="hl std">){</span>
+  <span class="hl std">resultados</span><span class="hl kwb">&lt;-</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">nExp</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">nExp)</span>
+    <span class="hl std">resultados[i]</span><span class="hl kwb">&lt;-</span><span class="hl kwd">interior</span><span class="hl std">(</span><span class="hl kwc">max</span><span class="hl std">=max)</span>
+  <span class="hl kwd">return</span><span class="hl std">(resultados)</span>
+<span class="hl std">}</span>
+</pre></div>
+</div></div>
+
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r">  <span class="hl std">res</span><span class="hl kwb">&lt;-</span><span class="hl kwd">distribucion</span><span class="hl std">(</span><span class="hl kwc">nExp</span><span class="hl std">=</span><span class="hl num">10000</span><span class="hl std">,</span><span class="hl kwc">max</span><span class="hl std">=</span><span class="hl num">2000</span><span class="hl std">)</span>
+  <span class="hl kwd">summary</span><span class="hl std">(res)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##     164     505     667     722     877    1993      33
+</pre></div>
+<div class="source"><pre class="knitr r">  <span class="hl kwd">hist</span><span class="hl std">(res)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div></div>
+
+</body>
+
+</html>
