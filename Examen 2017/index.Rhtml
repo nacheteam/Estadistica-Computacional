@@ -161,6 +161,17 @@
                 summary(hombres)
                 summary(mujeres)
                 end.rcode-->
+                <p>
+                  Queremos comprobar que la hipótesis de que el peso medio de las mujeres y hombres es el mismo se sigue manteniendo.
+                </p>
+                <!--begin.rcode
+                contraste<-t.test(x=hombres$Peso, y=mujeres$Peso)
+                contraste
+                end.rcode-->
+                <p>
+                  Como podemos ver el <!--rinline contraste$p.value --> es menor que $\alpha=0.05$ con lo que rechazamos la hipótesis nula. Esto es que rechazamos
+                  la hipótesis de que la media del peso de las mujeres y hombres es la misma.
+                </p>
 						</div>
 					</div>
 				</div>
@@ -183,8 +194,85 @@
 							</h3>
               <h2><u><b>Solución</b></u></h2>
                 <p>
-                  Solución
+                  En primer lugar vamos a visualizar el recinto del que estamos hablando.
                 </p>
+                <!--begin.rcode
+                dibuja_circunferencias <- function(R1=10, R2=100){
+                  f1 = function(x){sqrt(R1^2-x^2)}
+                  f2 = function(x){sqrt(R2^2-x^2)}
+                  plot(x=c(0,1), y=c(0,1), type="n", xlim=c(-R2,R2),ylim=c(-R2,R2))
+                  curve(f1(x),col="red", add=T)
+                  curve(-f1(x),add=T,col="red")
+                  curve(f2(x),col="red", add=T)
+                  curve(-f2(x),add=T,col="red")
+                }
+                dibuja_circunferencias()
+                end.rcode-->
+                <p>
+                  Hagamos la función que describe el movimiento aleatorio.
+                </p>
+                <!--begin.rcode
+                dentro_cfa <- function(x,y, r, Cx = 0, Cy = 0){
+                	return (((x-Cx)^2+(y-Cy)^2)<r^2)
+                }
+                posicion <- function(x1,x2,R1=10,R2=100){
+                  if(dentro_cfa(x1,x2,R1))
+                    return(1)
+                  else if(dentro_cfa(x1,x2,R2))
+                    return(2)
+                  else
+                    return(3)
+                }
+                movimiento <- function(x1=20,y1=20,n=1000){
+                  sucX <- 1:n
+                  sucY <- 1:n
+                  monedas1<-sample(c("cara","cruz"), n, replace=TRUE)
+                  monedas2<-sample(c("cara","cruz"), n, replace=TRUE)
+                  npasos<-n
+                  x<-x1
+                  y<-y1
+                  tipo_fin <- ""
+                    for(i in 1:n){
+                      sucX[i] = x
+                      sucY[i] = y
+                      if(posicion(x,y)==3){
+                        tipo_fin="Se ha escapado"
+                        npasos<-i
+                        break
+                      }
+                      else if(posicion(x,y)==1){
+                        tipo_fin="Ha llegado al corral"
+                        npasos<-i
+                        break
+                      }
+                      else{
+                        if(monedas1[i]=="cara")
+                          x=x+1
+                        else
+                          x=x-1
+                        if(monedas2[i]=="cara")
+                          y=y-1
+                        else
+                          y=y+1
+                      }
+                    }
+                  return(list(X=sucX, Y=sucY, Fin=tipo_fin, NumPasos=npasos))
+                }
+                mov<-movimiento()
+                end.rcode-->
+                <p>
+                  Ahora vamos a hacer la función que pinta el recorrido
+                </p>
+                <!--begin.rcode
+                dibujaResultado<-function(X,Y,numPuntos,tipo_fin){
+                dibuja_circunferencias()
+                lines(X[1:numPuntos],Y[1:numPuntos], col="blue")
+                if(tipo_fin=="Ha llegado al corral" || tipo_fin=="Se ha escapado")
+                  points(x=X[numPuntos],y=Y[numPuntos],col="red",type="o", pch=16, bg=par("bg"),cex=1.5)
+                }
+                mov$NumPasos
+                dibujaResultado(mov$X, mov$Y, mov$NumPasos, mov$Fin)
+                end.rcode-->
 						</div>
 					</div>
 				</div>

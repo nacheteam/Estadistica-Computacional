@@ -286,6 +286,29 @@
 ##  Max.   :71.00   Max.   :182.0   Max.   :24.00
 </pre></div>
 </div></div>
+                <p>
+                  Queremos comprobar que la hipótesis de que el peso medio de las mujeres y hombres es el mismo se sigue manteniendo.
+                </p>
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">contraste</span><span class="hl kwb">&lt;-</span><span class="hl kwd">t.test</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=hombres</span><span class="hl opt">$</span><span class="hl std">Peso,</span> <span class="hl kwc">y</span><span class="hl std">=mujeres</span><span class="hl opt">$</span><span class="hl std">Peso)</span>
+<span class="hl std">contraste</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## 
+## 	Welch Two Sample t-test
+## 
+## data:  hombres$Peso and mujeres$Peso
+## t = 8.0607, df = 33.764, p-value = 2.247e-09
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  12.07727 20.22273
+## sample estimates:
+## mean of x mean of y 
+##     77.90     61.75
+</pre></div>
+</div></div>
+                <p>
+                  Como podemos ver el <code class="knitr inline">2.2473139 &times; 10<sup>-9</sup></code> es menor que $\alpha=0.05$ con lo que rechazamos la hipótesis nula. Esto es que rechazamos
+                  la hipótesis de que la media del peso de las mujeres y hombres es la misma.
+                </p>
 						</div>
 					</div>
 				</div>
@@ -308,8 +331,96 @@
 							</h3>
               <h2><u><b>Solución</b></u></h2>
                 <p>
-                  Solución
+                  En primer lugar vamos a visualizar el recinto del que estamos hablando.
                 </p>
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dibuja_circunferencias</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">R1</span><span class="hl std">=</span><span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">R2</span><span class="hl std">=</span><span class="hl num">100</span><span class="hl std">){</span>
+  <span class="hl std">f1</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span><span class="hl kwd">sqrt</span><span class="hl std">(R1</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">-</span><span class="hl std">x</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)}</span>
+  <span class="hl std">f2</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span><span class="hl kwd">sqrt</span><span class="hl std">(R2</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">-</span><span class="hl std">x</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)}</span>
+  <span class="hl kwd">plot</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;n&quot;</span><span class="hl std">,</span> <span class="hl kwc">xlim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">R2,R2),</span><span class="hl kwc">ylim</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">R2,R2))</span>
+  <span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl kwd">f1</span><span class="hl std">(x),</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">add</span><span class="hl std">=T)</span>
+  <span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl kwd">f1</span><span class="hl std">(x),</span><span class="hl kwc">add</span><span class="hl std">=T,</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">)</span>
+  <span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl kwd">f2</span><span class="hl std">(x),</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">add</span><span class="hl std">=T)</span>
+  <span class="hl kwd">curve</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl kwd">f2</span><span class="hl std">(x),</span><span class="hl kwc">add</span><span class="hl std">=T,</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+<span class="hl kwd">dibuja_circunferencias</span><span class="hl std">()</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning in sqrt(R1^2 - x^2): Se han producido NaNs
+
+## Warning in sqrt(R1^2 - x^2): Se han producido NaNs
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" class="plot" /></div></div>
+                <p>
+                  Hagamos la función que describe el movimiento aleatorio.
+                </p>
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dentro_cfa</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span><span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">,</span> <span class="hl kwc">Cx</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">Cy</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">){</span>
+        <span class="hl kwd">return</span> <span class="hl std">(((x</span><span class="hl opt">-</span><span class="hl std">Cx)</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl opt">+</span><span class="hl std">(y</span><span class="hl opt">-</span><span class="hl std">Cy)</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span><span class="hl opt">&lt;</span><span class="hl std">r</span><span class="hl opt">^</span><span class="hl num">2</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+<span class="hl std">posicion</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x1</span><span class="hl std">,</span><span class="hl kwc">x2</span><span class="hl std">,</span><span class="hl kwc">R1</span><span class="hl std">=</span><span class="hl num">10</span><span class="hl std">,</span><span class="hl kwc">R2</span><span class="hl std">=</span><span class="hl num">100</span><span class="hl std">){</span>
+  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">dentro_cfa</span><span class="hl std">(x1,x2,R1))</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">)</span>
+  <span class="hl kwa">else if</span><span class="hl std">(</span><span class="hl kwd">dentro_cfa</span><span class="hl std">(x1,x2,R2))</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">)</span>
+  <span class="hl kwa">else</span>
+    <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+<span class="hl std">movimiento</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x1</span><span class="hl std">=</span><span class="hl num">20</span><span class="hl std">,</span><span class="hl kwc">y1</span><span class="hl std">=</span><span class="hl num">20</span><span class="hl std">,</span><span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">1000</span><span class="hl std">){</span>
+  <span class="hl std">sucX</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">n</span>
+  <span class="hl std">sucY</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">n</span>
+  <span class="hl std">monedas1</span><span class="hl kwb">&lt;-</span><span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;cara&quot;</span><span class="hl std">,</span><span class="hl str">&quot;cruz&quot;</span><span class="hl std">), n,</span> <span class="hl kwc">replace</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+  <span class="hl std">monedas2</span><span class="hl kwb">&lt;-</span><span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;cara&quot;</span><span class="hl std">,</span><span class="hl str">&quot;cruz&quot;</span><span class="hl std">), n,</span> <span class="hl kwc">replace</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+  <span class="hl std">npasos</span><span class="hl kwb">&lt;-</span><span class="hl std">n</span>
+  <span class="hl std">x</span><span class="hl kwb">&lt;-</span><span class="hl std">x1</span>
+  <span class="hl std">y</span><span class="hl kwb">&lt;-</span><span class="hl std">y1</span>
+  <span class="hl std">tipo_fin</span> <span class="hl kwb">&lt;-</span> <span class="hl str">&quot;&quot;</span>
+    <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">n){</span>
+      <span class="hl std">sucX[i]</span> <span class="hl kwb">=</span> <span class="hl std">x</span>
+      <span class="hl std">sucY[i]</span> <span class="hl kwb">=</span> <span class="hl std">y</span>
+      <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">posicion</span><span class="hl std">(x,y)</span><span class="hl opt">==</span><span class="hl num">3</span><span class="hl std">){</span>
+        <span class="hl std">tipo_fin</span><span class="hl kwb">=</span><span class="hl str">&quot;Se ha escapado&quot;</span>
+        <span class="hl std">npasos</span><span class="hl kwb">&lt;-</span><span class="hl std">i</span>
+        <span class="hl kwa">break</span>
+      <span class="hl std">}</span>
+      <span class="hl kwa">else if</span><span class="hl std">(</span><span class="hl kwd">posicion</span><span class="hl std">(x,y)</span><span class="hl opt">==</span><span class="hl num">1</span><span class="hl std">){</span>
+        <span class="hl std">tipo_fin</span><span class="hl kwb">=</span><span class="hl str">&quot;Ha llegado al corral&quot;</span>
+        <span class="hl std">npasos</span><span class="hl kwb">&lt;-</span><span class="hl std">i</span>
+        <span class="hl kwa">break</span>
+      <span class="hl std">}</span>
+      <span class="hl kwa">else</span><span class="hl std">{</span>
+        <span class="hl kwa">if</span><span class="hl std">(monedas1[i]</span><span class="hl opt">==</span><span class="hl str">&quot;cara&quot;</span><span class="hl std">)</span>
+          <span class="hl std">x</span><span class="hl kwb">=</span><span class="hl std">x</span><span class="hl opt">+</span><span class="hl num">1</span>
+        <span class="hl kwa">else</span>
+          <span class="hl std">x</span><span class="hl kwb">=</span><span class="hl std">x</span><span class="hl opt">-</span><span class="hl num">1</span>
+        <span class="hl kwa">if</span><span class="hl std">(monedas2[i]</span><span class="hl opt">==</span><span class="hl str">&quot;cara&quot;</span><span class="hl std">)</span>
+          <span class="hl std">y</span><span class="hl kwb">=</span><span class="hl std">y</span><span class="hl opt">-</span><span class="hl num">1</span>
+        <span class="hl kwa">else</span>
+          <span class="hl std">y</span><span class="hl kwb">=</span><span class="hl std">y</span><span class="hl opt">+</span><span class="hl num">1</span>
+      <span class="hl std">}</span>
+    <span class="hl std">}</span>
+  <span class="hl kwd">return</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">X</span><span class="hl std">=sucX,</span> <span class="hl kwc">Y</span><span class="hl std">=sucY,</span> <span class="hl kwc">Fin</span><span class="hl std">=tipo_fin,</span> <span class="hl kwc">NumPasos</span><span class="hl std">=npasos))</span>
+<span class="hl std">}</span>
+<span class="hl std">mov</span><span class="hl kwb">&lt;-</span><span class="hl kwd">movimiento</span><span class="hl std">()</span>
+</pre></div>
+</div></div>
+                <p>
+                  Ahora vamos a hacer la función que pinta el recorrido
+                </p>
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">dibujaResultado</span><span class="hl kwb">&lt;-</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">X</span><span class="hl std">,</span><span class="hl kwc">Y</span><span class="hl std">,</span><span class="hl kwc">numPuntos</span><span class="hl std">,</span><span class="hl kwc">tipo_fin</span><span class="hl std">){</span>
+<span class="hl kwd">dibuja_circunferencias</span><span class="hl std">()</span>
+<span class="hl kwd">lines</span><span class="hl std">(X[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">numPuntos],Y[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">numPuntos],</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">)</span>
+<span class="hl kwa">if</span><span class="hl std">(tipo_fin</span><span class="hl opt">==</span><span class="hl str">&quot;Ha llegado al corral&quot;</span> <span class="hl opt">||</span> <span class="hl std">tipo_fin</span><span class="hl opt">==</span><span class="hl str">&quot;Se ha escapado&quot;</span><span class="hl std">)</span>
+  <span class="hl kwd">points</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=X[numPuntos],</span><span class="hl kwc">y</span><span class="hl std">=Y[numPuntos],</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span><span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;o&quot;</span><span class="hl std">,</span> <span class="hl kwc">pch</span><span class="hl std">=</span><span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">bg</span><span class="hl std">=</span><span class="hl kwd">par</span><span class="hl std">(</span><span class="hl str">&quot;bg&quot;</span><span class="hl std">),</span><span class="hl kwc">cex</span><span class="hl std">=</span><span class="hl num">1.5</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+<span class="hl std">mov</span><span class="hl opt">$</span><span class="hl std">NumPasos</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 719
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">dibujaResultado</span><span class="hl std">(mov</span><span class="hl opt">$</span><span class="hl std">X, mov</span><span class="hl opt">$</span><span class="hl std">Y, mov</span><span class="hl opt">$</span><span class="hl std">NumPasos, mov</span><span class="hl opt">$</span><span class="hl std">Fin)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning in sqrt(R1^2 - x^2): Se han producido NaNs
+
+## Warning in sqrt(R1^2 - x^2): Se han producido NaNs
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" class="plot" /></div></div>
 						</div>
 					</div>
 				</div>
