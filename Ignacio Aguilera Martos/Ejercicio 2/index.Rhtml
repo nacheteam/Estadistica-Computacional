@@ -1,0 +1,265 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+    <head>
+        <!-- meta data -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <!--font-family-->
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;subset=devanagari,latin-ext" rel="stylesheet">
+
+        <!-- title of site -->
+        <title>Ejercicio 2</title>
+
+        <!-- For favicon png -->
+		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
+
+        <!--font-awesome.min.css-->
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+		<!--flat icon css-->
+		<link rel="stylesheet" href="assets/css/flaticon.css">
+
+		<!--animate.css-->
+        <link rel="stylesheet" href="assets/css/animate.css">
+
+        <!--owl.carousel.css-->
+        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+		<link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+
+        <!--bootstrap.min.css-->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+		<!-- bootsnav -->
+		<link rel="stylesheet" href="assets/css/bootsnav.css" >
+
+        <!--style.css-->
+        <link rel="stylesheet" href="assets/css/style.css">
+
+        <!--responsive.css-->
+        <link rel="stylesheet" href="assets/css/responsive.css">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+        <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+	<body>
+		<!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+		<!-- top-area Start -->
+		<header class="top-area">
+			<div class="header-area">
+				<!-- Start Navigation -->
+			    <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+
+			        <div class="container">
+
+			            <!-- Start Header Navigation -->
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+			                    <i class="fa fa-bars"></i>
+			                </button>
+			                <a class="navbar-brand" href="index.html">Ejercicio 2. Ignacio Aguilera Martos</a>
+			            </div><!--/.navbar-header-->
+			            <!-- End Header Navigation -->
+
+			            <!-- Collect the nav links, forms, and other content for toggling -->
+			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+			                <li class=" smooth-menu active"></li>
+                          <li class=" smooth-menu"><a href="#ej2">Ejercicio 2</a></li>
+			                </ul><!--/.nav -->
+			            </div><!-- /.navbar-collapse -->
+			        </div><!--/.container-->
+			    </nav><!--/nav-->
+			    <!-- End Navigation -->
+			</div><!--/.header-area-->
+
+		    <div class="clearfix"></div>
+
+		</header><!-- /.top-area-->
+		<!-- top-area End -->
+
+		<!--welcome-hero start -->
+		<section id="welcome-hero" class="welcome-hero">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<div class="header-text">
+							<h2>Estadística Computacional</h2>
+							<p>Universidad de Granada</p>
+						</div><!--/.header-text-->
+					</div><!--/.col-->
+				</div><!-- /.row-->
+			</div><!-- /.container-->
+
+		</section><!--/.welcome-hero-->
+		<!--welcome-hero end -->
+
+    <!--Ejercicio 2 start -->
+		<section id="ej2" class="about">
+			<div class="section-heading text-center">
+				<h2>Ejercicio 2</h2>
+			</div>
+			<div class="container">
+				<div class="about-content">
+					<div class="row">
+						<div class="single-about-txt">
+              <h2><u><b>Enunciado</b></u></h2>
+							<h3>
+                R incluye una función generadora de números pseudoaleatorios de la distribución de Poisson, que está bien establecido que realiza la generación correctamente.
+                Ahora bien, te ha llegado un escrito indicando que en el caso de que el parámetro lambda valga uno, no se generan correctamente.
+                Especifica cómo podrías utilizar el contraste de ji cuadrado para tomar una decisión y hazlo.
+                Añade los comentarios que estimes oportunos para justificar tu actuación.
+							</h3>
+              <h2><u><b>Solución</b></u></h2>
+              <p>
+                R posee una función para la generación de números pseudoaleatorios de la distribución de Poisson que es rpois, sospechamos de esta función luego nos dará
+                la muestra con la que haremos el contraste. Para poder contrastar los datos no podemos partir de la generación de esta función por lo que obtendremos
+                los valores esperados con la función dpois que es la que nos da la función de densidad de la distribución de Poisson.
+              </p>
+              <p>
+                Por tanto el procedimiento será el siguiente. Estudiaremos en primer lugar los valores esperados usando la función dpois que sabemos que sí funciona
+                bien con la distribución de Poisson con $\lambda=1$. Luego tomaremos una muestra de 1000 elementos con la función rpois que será la muestra que empleemos en
+                el contraste. Cabe decir que la hipótesis nula es que el generador aleatorio funciona bien para $\lambda=1$ y que fijamos el $\alpha=0.05$.
+              </p>
+              <p>
+                Recordemos que el contraste no funciona bien si no tenemos al menos 6 elementos esperados
+                del número que estemos considerando.
+              </p>
+              <p>
+                En primer lugar vamos a ver cómo se distribuye la función de densidad de la Poisson. Tengamos en cuenta que pretendemos
+                tomar una muestra por ejemplo de tamaño 1000 para realizar el contraste.
+              </p>
+              <!--begin.rcode
+              val<-dpois(0:10,1)
+              val
+              round(val*1000)
+              end.rcode-->
+              <p>
+                Como podemos ver hemos estudiado la distribución de probabilidad de los números
+                del 0 al 10 con la distribución de Poisson. Como esperamos tomar una muestra de 1000 elementos
+                he multiplicado las probabilidades obtenidas por 1000 para saber cuáles son los valores esperados de
+                cada uno de los números del 0 al 10. Como se puede observar el número 5 sólo tiene un valor esperado de 3 por
+                lo que no merece la pena considerar a partir de aquí los elementos por separados y debemos colapsarlos en una sola columna.
+              </p>
+              <!--begin.rcode
+              utiles<-dpois(0:3,1)
+              utiles
+              sum(utiles)
+              esperados<-c(utiles,1-sum(utiles))
+              esperados
+              end.rcode-->
+              <p>
+                Para colapsar todos los valores por encima del 3 en una sola columna tenemos que saber cuánto vale la suma de las probabilidades
+                de todos los elementos que sí hemos considerado como útiles por tener un número esperado de ocurrencias de al menos 6. En nuestro caso
+                estos elementos útiles son desde el 0 hasta el 3, pues si incluyéramos el 4 entonces no obtendríamos siquiera 6 elementos esperados de valor mayor o igual a 5.
+                Es por esto que nos conviene considerar de forma separada los valores desde el 0 hasta el 3 y colapsar en una sola columna del 4 en adelante. Como hemos obtenido
+                que la suma de las probabilidades de los elementos desde el 0 hasta el 3 es de <!--rinline sum(utiles)--> entonces la probabilidad de que salga un elemento mayor a
+                3 es de <!--rinline 1-sum(utiles) -->
+              </p>
+              <p>
+                Ahora podemos tomar la muestra de 1000 números de la Poisson con $\lambda=1$ con la que haremos el contraste de hipótesis.
+              </p>
+              <!--begin.rcode
+              muestra<-rpois(1000,1)
+              table(muestra)
+              end.rcode-->
+              <p>
+                Ahora viendo los datos obtenidos tenemos que hacer un vector con los valores esperados para el 0,1,2,3 y para 4 o más de 4 para colapsar todos estos valores en una sola columna.
+              </p>
+              <!--begin.rcode
+              tab<-table(muestra)
+              observados<-c()
+              i<-1
+              for(t in tab){
+                if(i<=5)
+                  observados = c(observados,t)
+                else
+                  observados[5]<-observados[5]+t
+                i<-i+1
+              }
+              observados
+              end.rcode-->
+              <p>
+                Ahora que tenemos los valores observados <!--rinline observados--> y las probabilidades de los valores esperados <!--rinline esperados--> podemos
+                hacer el contraste de hipótesis con la hipótesis nula de que estamos seguros de que el generador de números aleatorios de la Poisson
+                funciona bien para $\lambda=1$ y con $\alpha=0.05$.
+                Hacemos el test:
+              </p>
+              <!--begin.rcode
+              res<-chisq.test(observados, p=esperados)
+              res
+              end.rcode-->
+              <p>
+                El p-valor obtenido cuando hice la ejecución fue de 0.9289 con lo que, al ser mayor que 0.05 no rechazamos la hipótesis nula y por tanto
+                seguimos creyendo que el generador de números aleatorios de la Poisson con $\lambda=1$ sigue funcionando correctamente.
+              </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!--/.about-->
+		<!--Ejercicio 2 end -->
+
+		<!-- Include all js compiled plugins (below), or include individual files as needed -->
+
+		<script src="assets/js/jquery.js"></script>
+
+        <!--modernizr.min.js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+		<!--bootstrap.min.js-->
+        <script src="assets/js/bootstrap.min.js"></script>
+
+		<!-- bootsnav js -->
+		<script src="assets/js/bootsnav.js"></script>
+
+		<!-- jquery.sticky.js -->
+		<script src="assets/js/jquery.sticky.js"></script>
+
+		<!-- for progress bar start-->
+
+		<!-- progressbar js -->
+		<script src="assets/js/progressbar.js"></script>
+
+		<!-- appear js -->
+		<script src="assets/js/jquery.appear.js"></script>
+
+		<!-- for progress bar end -->
+
+		<!--owl.carousel.js-->
+        <script src="assets/js/owl.carousel.min.js"></script>
+
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+
+        <!--Custom JS-->
+        <script src="assets/js/custom.js"></script>
+
+    </body>
+
+</html>
